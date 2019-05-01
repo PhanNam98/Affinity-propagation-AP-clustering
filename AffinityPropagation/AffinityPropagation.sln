@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.489
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "AffinityPropagation", "AffinityPropagation\AffinityPropagation.pyproj", "{24527F89-E205-441C-8A41-1A996E635F2A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{24527F89-E205-441C-8A41-1A996E635F2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24527F89-E205-441C-8A41-1A996E635F2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9588B0D4-254C-43C6-B422-0D565A941C13}
+	EndGlobalSection
+EndGlobal
