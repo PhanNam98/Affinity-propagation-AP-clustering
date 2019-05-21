@@ -7,13 +7,16 @@ from itertools import cycle
 # #############################################################################
 # Generate sample data
 centers = [[1, 1], [-1, -1], [1, -1]]
-X, labels_true = make_blobs(n_samples=30, centers=centers, cluster_std=0.5,
+X, labels_true = make_blobs(n_samples=100, centers=centers, cluster_std=0.5,
                             random_state=0)
-#plt.figure(2)
-#plt.clf()
-#plt.plot()
-#plt.title('test')
-#plt.show()
+plt.figure(2)
+plt.clf()
+plt.plot(X, 'r.')
+#plt.plot(centers, 'go', markersize=14)
+plt.title('test')
+plt.show()
+
+#tes = 1
 # #############################################################################
 # Compute Affinity Propagation
 af = AffinityPropagation(preference=-50).fit(X)
@@ -39,8 +42,7 @@ print("Silhouette Coefficient: %0.3f"
 plt.close('all')
 plt.figure(1)
 plt.clf()
-plt.title('Estimated number of clusters: %d' % n_clusters_)
-plt.show()
+
 
 colors = cycle('bgrcmykbgrcmykbgrcmykbgrcmyk')
 for k, col in zip(range(n_clusters_), colors):
@@ -52,4 +54,5 @@ for k, col in zip(range(n_clusters_), colors):
     for x in X[class_members]:
         plt.plot([cluster_center[0], x[0]], [cluster_center[1], x[1]], col)
 
-#plt.show()
+plt.title('Estimated number of clusters: %d' % n_clusters_)
+plt.show()

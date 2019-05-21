@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectTypeGuids>{8267e218-6b96-4d5d-a9df-50cedf58d05f};{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>AffinityPropagation.py</StartupFile>
+    <StartupFile>AP-dissected.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -23,7 +23,9 @@
     <Compile Include="AffinityPropagation.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="clustering-sample.py" />
+    <Compile Include="AP-dissected.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="environment.yml" />
