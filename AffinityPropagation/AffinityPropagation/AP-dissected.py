@@ -8,7 +8,8 @@ import csv
 import pandas as pd
 import time
 from tqdm import tqdm
-
+from sklearn.datasets.samples_generator import make_blobs
+from sklearn import metrics
 
 def make_gif(figures, filename, fps=10, **kwargs):
     '''Make gif result'''
@@ -25,7 +26,7 @@ def similarity(xi, xj):
     '''
 The first messages sent per iteration, are the responsibilities. These responsibility values are based on a similarity function s
 
-+The negative euclidian distance squared
++The negative euclidean  distance squared
 s(i,k) = -||xi - xk||^2
 '''
     return -((xi - xj)**2).sum()
@@ -158,7 +159,7 @@ def read_file(FILE_PATH, FEATURE):
     x = data.values
     return x
 
-def plot_result(A, R):
+def plot_result(A, R, iter):
     sol = A + R
     
     labels = np.argmax(sol, axis=1)
@@ -185,13 +186,13 @@ def plot_result(A, R):
         re.plot(X, Y, 'o', markersize=ms,  markeredgecolor=edge, c=colors[exemplar])
         
 
-    re.set_title('Number of exemplars: %s' % len(exemplars))
+    re.set_title('Number of exemplars: %s, Convergence after iteration: %d' % (len(exemplars),iter))
     plt.show()
     #return fig, labels, exemplars
     return labels, exemplars
 
 #for genarated data
-def plot_iteration(A, R):
+def plot_iteration(A, R, iter):
     fig = plt.figure(figsize=(12, 6))
     sol = A + R
     # every data point i chooses the maximum index k
@@ -214,8 +215,8 @@ def plot_iteration(A, R):
             plt.plot([X, x[exemplar][0]], [Y, x[exemplar][1]], c=colors[exemplar])
         plt.plot(X, Y, 'o', markersize=ms,  markeredgecolor=edge, c=colors[exemplar])
         
-
-    plt.title('Number of exemplars: %s' % len(exemplars))
+    plt.title('Number of exemplars: %s, iteration: %d' % (len(exemplars),iter))
+    plt.show()
     return fig, labels, exemplars
 
 def create_csv():
@@ -246,27 +247,63 @@ def create_csv():
 #plt.scatter(x[:, 0], x[:, 1], c=c)
 #plt.show()
 
+# Generate sample data
+#centers = [[1, 3], [1, 4], [1, 2]]
+##centers = [[1, 1], [4, 4], [7, 7]]
+
+#x, labels_true = make_blobs(n_samples=300, centers=centers, cluster_std=0.5,
+#                            random_state=0)
+
+#plt.scatter(x[:, 0], x[:, 1])
+#plt.show()
+
 #A, R, S = create_matrices()
-#preference = np.median(S)
-##preference =  -1000
+#'''
+#If the preferences are not passed as arguments, they will be set to the median of the input similarities.
+#'''
+##preference = np.median(S)
+#preference = -50
 
 #np.fill_diagonal(S, preference)
 #damping = 0.5
 
 #figures = []
+#last_sol = np.ones(A.shape)
+#last_exemplars = np.array([])
+
 #start_time = time.time()
-#for i in tqdm(range(n)):
+#i=0
+#while True:
 #    update_r(damping, slow=False)
 #    update_a(damping, slow=False)
-    
-#    if i % 5 == 0:
-#        fig, labels, exemplars = plot_iteration(A, R)
-#        figures.append(fig)
 
-#make_gif(figures, 'test.gif', 2)
+#    sol = A + R
+#    exemplars = np.unique(np.argmax(sol, axis=1))
+    
+#    #if last_exemplars.size != exemplars.size or np.all(last_exemplars != exemplars):
+#    #if i % 5 == 0:
+#    #    fig, labels, exemplars = plot_iteration(A, R, i)
+#    #    figures.append(fig)
+
+#    if np.allclose(last_sol, sol):
+#        fig, labels, exemplars = plot_iteration(A, R, i)
+#        print(exemplars)
+#        print('iter: %d' % i)
+#        break
+
+#    last_sol = sol
+#    last_exemplars = exemplars
+#    i += 1
+#    print(i)
+
+##make_gif(figures, 'test.gif', 2)
 #time_taken = time.time() - start_time
 #print('time taken: %.4f (s)' % time_taken)
-
+#print('==================================================')
+#print('Estimated number of clusters: %d' % len(exemplars))
+#print("Homogeneity (Tính đồng nhất): %0.3f" % metrics.homogeneity_score(labels_true, labels))
+#print("Completeness (Tính đầy đủ): %0.3f" % metrics.completeness_score(labels_true, labels))
+#print("V-measure (Phân phối V): %0.3f" % metrics.v_measure_score(labels_true, labels))
 #==================================================
 filePath = os.getcwd() + '\data\Mall_Customers_edited.csv'
 feature = ['CustomerID', 'Gender', 'Age', 'Annual Income (k$)', 'Spending Score (1-100)']
@@ -297,14 +334,34 @@ damping = 0.5
 
 print('Affinity Propagation begins')
 start_time = time.time()
-for i in tqdm(range(len(x))):
+
+last_sol = np.ones(A.shape)
+for i in tqdm(range(len(x)*2)):
     update_r(damping, slow=False)
     update_a(damping, slow=False)
 
-labels, exemplars = plot_result(A, R)
-create_csv()
+    sol = A + R
+    
+    if np.allclose(last_sol, sol):
+        labels, exemplars = plot_result(A, R, i)
+        break
+
+    last_sol = sol
+
+#=======================================
+from sklearn.cluster import AffinityPropagation
+clustering = AffinityPropagation().fit(x)
+labels_true = clustering.labels_
+#=======================================
+#labels, exemplars = plot_result(A, R)
+#create_csv()
 time_taken = time.time() - start_time
 print('time taken: %.4f (s)' % time_taken)
+print('==================================================')
+#print('Estimated number of clusters: %d' % len(exemplars))
+print("Homogeneity (Tính đồng nhất): %0.3f" % metrics.homogeneity_score(labels_true, labels))
+print("Completeness (Tính đầy đủ): %0.3f" % metrics.completeness_score(labels_true, labels))
+print("V-measure (Phân phối V): %0.3f" % metrics.v_measure_score(labels_true, labels))
 print('-----------------------------------------------------------------------')
 print('Number of Groups: %s' % len(exemplars))
 print('Gender', '| Age', '| Annual Income (k$)', '| Spending Score (1-100)', '| Gender: 0 = Male, 1 = Female')
@@ -315,3 +372,4 @@ for i in range(len(exemplars)):
             print(x[j])
             
     print('-------------')
+
