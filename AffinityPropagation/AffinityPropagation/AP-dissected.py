@@ -2,7 +2,7 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 from itertools import cycle
-import imageio
+#import imageio
 from io import BytesIO
 import csv
 import pandas as pd
@@ -11,16 +11,16 @@ from tqdm import tqdm
 from sklearn.datasets.samples_generator import make_blobs
 from sklearn import metrics
 
-def make_gif(figures, filename, fps=10, **kwargs):
-    '''Make gif result'''
-    images = []
-    for fig in figures:
-        output = BytesIO()
-        fig.savefig(output)
-        plt.close(fig)  
-        output.seek(0)
-        images.append(imageio.imread(output))
-    imageio.mimsave(filename, images, fps=fps, **kwargs)
+#def make_gif(figures, filename, fps=10, **kwargs):
+#    '''Make gif result'''
+#    images = []
+#    for fig in figures:
+#        output = BytesIO()
+#        fig.savefig(output)
+#        plt.close(fig)  
+#        output.seek(0)
+#        images.append(imageio.imread(output))
+#    imageio.mimsave(filename, images, fps=fps, **kwargs)
 
 def similarity(xi, xj):
     '''
