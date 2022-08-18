@@ -1,7 +1,7 @@
 pip==10.0.1
 setuptools==39.0.1
 pandas
-numpy==1.19.3
+numpy==1.22.0
 matplotlib
 scikit-learn
 tqdm
