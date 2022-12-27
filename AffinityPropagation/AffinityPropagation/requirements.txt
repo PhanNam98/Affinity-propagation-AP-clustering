@@ -1,5 +1,5 @@
 pip==10.0.1
-setuptools==39.0.1
+setuptools==65.5.1
 pandas
 numpy==1.19.3
 matplotlib
